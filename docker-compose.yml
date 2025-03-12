@@ -1,12 +1,12 @@
 version: '3.9'
 networks:
-  siscon-docker.network:
+  sistema-docker.network:
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: siscon-docker.app
+    container_name: sistema-docker.app
     restart: unless-stopped #O contêiner será reiniciados em caso de falha ou reinicialização da máquina host. (NO, ALWAYS)
     volumes: #faz um mapeamento do diretorio local para um diretorio dentro do container
       - .:/var/www/html
@@ -19,32 +19,32 @@ services:
     depends_on:
       - postgres_db
     networks:
-      - siscon-docker.network
+      - sistema-docker.network
   postgres_db:
     image: postgres:15-alpine3.18
-    container_name: siscon-docker.postgres
+    container_name: sistema-docker.postgres
     restart: unless-stopped #O contêiner será reiniciados em caso de falha ou reinicialização da máquina host. (NO, ALWAYS)
     ports:
       - 5454:5432
     expose:
       - "5432"
     environment:
-      POSTGRES_DB: siscon
-      POSTGRES_USER: siscon
-      POSTGRES_PASSWORD: siscon123456
+      POSTGRES_DB: sistema
+      POSTGRES_USER: sistema
+      POSTGRES_PASSWORD: sistema123456
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - siscon-docker.network
+      - sistema-docker.network
   redis:
     image: bitnami/redis:latest
     restart: always
-    container_name: siscon-docker.redis
+    container_name: sistema-docker.redis
     tty: true
     volumes:
       - ./docker/redis:/bitnami/redis/data
     networks:
-      - siscon-docker.network
+      - sistema-docker.network
     environment:
       - ALLOW_EMPTY_PASSWORD=no
       - REDIS_PASSWORD=root
